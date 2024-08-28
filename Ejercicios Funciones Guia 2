@@ -1,0 +1,169 @@
+def Ejercicio1():
+
+    # A) Definir las Variables dependiente y independiente:
+
+        # VI es la Variable Independiente, que representa la cantidad de elementos entrantes.
+        # VD es la Variable Dependiente, que representa el Tiempo de ejecución en milisegundos (ms).
+
+    # B) Encuentra la función F(x) que relaciona el tamaño de la entrada con el tiempo de ejecución del algoritmo.
+    # Para eso, utiliza polyfit de Numpy:
+
+        import numpy as np   # Importar la librería "Numpy" para utilizar la función polyfit
+
+        VI = np.array([100, 200, 500, 1000, 2000])  # Valores de la Variable Independiente (cantidad de elementos)
+        VD = np.array([2, 4, 10, 20, 40])           # Valores de la Variable Dependiente (tiempo de ejecución en ms)
+
+        pendiente, intercepto = np.polyfit(VI, VD, 1)  # 1 es el grado del polinomio (lineal, grado 1)
+
+        m = round(pendiente, 2)  # Redondear la pendiente a 2 decimales
+        n = round(intercepto, 2) # Redondear el intercepto a 2 decimales
+
+        print(f"La función es F(x) = {m}x + {n}")  # Imprimir la función obtenida
+
+    # C) Calcula el tiempo de ejecución para una entrada de 1500 elementos.
+    # En la función F(x), "x" es el valor de la Variable Independiente.
+
+        def F(x):
+            return 0.02*x  # Usar el valor de la pendiente y el intercepto obtenidos para definir la función
+
+        print(f"Si la entrada tiene 1500 elementos, el tiempo de ejecución es:")  # Texto descriptivo para el resultado
+        print(f"{F(1500)} milisegundos")  # Llamar a la función con x = 1500 y mostrar el resultado
+
+    # D) Utiliza la función "fsolve" de "Scipy" para determinar el tamaño de entrada que tomaría 50 milisegundos de tiempo de ejecución.
+    # "fsolve" se utiliza para encontrar el valor de la Variable Independiente que satisface la ecuación F(x) = 50.
+
+        from scipy.optimize import fsolve  # Importar "fsolve" de la librería "Scipy"
+
+        def D(x):
+            return F(x) - 50  # Queremos encontrar el valor de x tal que F(x) sea igual a 50
+
+        x_guess = np.linspace(0, 10000, 1)  # Un valor inicial para empezar la búsqueda de la solución
+        solucion = fsolve(D, x_guess)  # Encontrar el valor de x que hace que D(x) = 0
+
+        print(f"Para un tiempo de ejecución de 50 milisegundos, la entrada es de aproximadamente {solucion[0]} elementos.")
+
+def Ejercicio2():
+
+    # A) Identificar la Variable Independiente y Dependiente:
+
+        # VI = Variable Independiente, que representa los Datos Transferidos (GB)
+        # VD = Variable Dependiente, que representa el Tiempo de la Transferencia (min)
+
+    # B) Utilizando la función "polyfit" de "Numpy", encuentra la función que modela el tiempo de 
+    # transferencia T(x) en función del volumen de los datos transferidos:
+
+        import numpy as np  # Importar la librería "Numpy" para utilizar la función polyfit
+
+        VI = np.array([5, 10, 25, 50, 100])  # Valores de la Variable Independiente (GB transferidos)
+        VD = np.array([10, 20, 50, 100, 200])  # Valores de la Variable Dependiente (Tiempo en minutos)
+
+        pendiente, intercepcion = np.polyfit(VI, VD, 1)  # 1 indica que estamos ajustando una función lineal
+
+        m = round(pendiente, 2)  # Redondear la pendiente a 2 decimales
+        n = round(intercepcion, 2)  # Redondear la intercepción a 2 decimales
+
+        print(f"La función es T(x) = {m}x + {n}")  # Imprimir la función obtenida
+
+    # C) Interpretar la pendiente en el contexto del problema:
+        print(f"Pendiente = {m}")
+        print(f"INTERPRETACIÓN: Por cada GB transferido, el tiempo de transferencia aumenta en {m} minutos")
+
+    # D) ¿Cuánto tiempo toma una transferencia de 73,2 GB?:
+
+        def T(x):
+            return m*x  # Usar la pendiente y el intercepto obtenidos para definir la función T(x)
+
+        print(f"El tiempo que tardaría en transferir 73.2 GB es de {T(73.2)} minutos")  # Calcular y mostrar el tiempo
+
+    # E) Utiliza la función "fsolve" de "Scipy" para determinar la cantidad de datos que se pueden transferir 
+    # en 123.5 minutos:
+
+        from scipy.optimize import fsolve  # Importar "fsolve" de la librería "Scipy"
+
+        def D(x):
+            return T(x) - 123.5  # Queremos encontrar el valor de x tal que T(x) = 123.5
+
+        x_Busqueda = np.linspace(0, 10000, 1)  # Un valor inicial para empezar la búsqueda de la solución
+        solucion = fsolve(D, x_Busqueda)  # Encontrar el valor de x que hace que D(x) = 0
+
+        print(f"En 123.5 minutos se transfieren aproximadamente {solucion[0]} GB")
+
+    # F) Grafica la función T(x) indicando el nombre de los ejes y su unidad de medida. 
+    # Interpreta lo observado. Para graficar utiliza la biblioteca "Matplotlib".
+
+        import matplotlib.pyplot as plt  # Importar la librería "Matplotlib" para graficar
+
+        x = np.arange(0, 110, 0.01)  # Crear un rango de valores para la Variable Independiente (GB)
+        plt.plot(x, T(x))  # Graficar la función T(x)
+        plt.axis([0, 110, 0, 300])  # Definir los límites de los ejes: [xmin, xmax, ymin, ymax]
+        plt.xlabel("Datos Transferidos en GB")  # Etiqueta del eje x
+        plt.ylabel("Tiempo en minutos")  # Etiqueta del eje y
+        plt.title("Comparativa entre tiempo de transferencia y datos transferidos")  # Título del gráfico
+        plt.grid(True)  # Mostrar la cuadrícula en el gráfico
+        plt.show()  # Mostrar el gráfico
+
+def Ejercicio4():
+   # 1. Determina la variable dependiente e independiente, indicando unidad de medida:
+        # VI: Variable Independiente, que representa los Usuarios Activos (cantidad de usuarios)
+        # VD: Variable Dependiente, que representa el uso de la memoria M(x) (en GB)
+
+    # 2. Identifica e interpreta la pendiente de la función:
+        # La pendiente es de 0.5.
+        # INTERPRETACIÓN: Por cada usuario activo adicional, el uso de la memoria aumenta en 0.5 GB.
+
+    # 3. ¿Cuánta memoria del servidor está en uso cuando no hay usuarios activos?
+        def M(x):
+            return 0.5 * x + 2  # La función M(x) representa el uso de memoria en función de los usuarios activos
+        print(f"Cuando no hay ningún usuario conectado, el consumo del servidor es de {M(0)} GB")
+
+    # 4. ¿Cuánta memoria del servidor está en uso cuando hay 637 usuarios activos?
+        print(f"Cuando hay 637 usuarios conectados, el consumo del servidor es de {M(637)} GB")
+
+    # 5. Utiliza Python para determinar cuántos usuarios activos provocan un uso de memoria de 32 GB.
+        import numpy as np
+        from scipy.optimize import fsolve  # Importar fsolve para resolver la ecuación
+
+        def D(u):
+            return M(u) - 32  # Queremos encontrar el valor de u tal que M(u) = 32 GB
+
+        Desconocido = np.linspace(0, 10000, 1)  # Un valor inicial para empezar la búsqueda de la solución
+        Solucion = fsolve(D, Desconocido)  # Encontrar el valor de u que hace que D(u) = 0
+
+        print(f"Si se utilizan 32 GB es porque hay aproximadamente {Solucion[0]} usuarios activos.")
+
+    # 6. ¿Es posible un uso de memoria de 59.8 GB?
+        def D(u):
+            return M(u) - 59.8  # Queremos encontrar el valor de u tal que M(u) = 59.8 GB
+
+        Solucion = fsolve(D, Desconocido)  # Encontrar el valor de u que hace que D(u) = 0
+
+        print(f"Si se utilizan 59.8 GB es porque hay aproximadamente {Solucion[0]} usuarios activos.")
+
+def Ejercicio5():
+    #1. Determine la variable dependiente e independiente, indicando unidad de medida.
+        #VI: Los servidores son los Independiete.
+        #VD: Los miles de dolares es Dependiente de los servidores.
+
+    #2. ¿Qué representa la pendiente en el contexto del problema?
+            #Por cada servidor, el costo de operación mensual aumenta 1,5 mil dólares.
+
+    #3. ¿Qué representa el intercepto en el contexto del problema?
+            #Si no Tubieramos servidor el costo de mantención es de 10 mil dolares.
+
+    #4. Calcula el costo de operación cuando hay 47 servidores.
+            def C(x):
+                  return 1.5*x + 10
+            print(f"Cuando hay 47 servidores el costo es de {C(47)} mil dolares")
+    #5. Determina cuántos servidores hay cuando el costo de operación es de 92.500 dólares.
+    #  Utiliza Python para resolver.
+            import numpy as np
+            from scipy.optimize import fsolve
+
+            def D(x):
+                  return C(x) - 92.5
+            
+            Desconocidos = np.linspace(1, 100000, 1)
+            Solucion = fsolve(D, Desconocidos)
+
+            print(f"La cantidad de sercidores que se puede tener por 92.500 mil dolares es de {Solucion[0]} servidores")
+
